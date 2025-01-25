@@ -1,14 +1,27 @@
 {
-  "name": "gingrrr",
+  "name": "gingr",
   "private": true,
   "scripts": {
+    "clean": "turbo clean",
     "build": "turbo build",
     "dev": "turbo dev",
+    "dev:web": "turbo dev --filter web --filter ui",
+    "dev:docs": "turbo dev --filter docs --filter ui",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "lint:fix": "turbo lint -- --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo test"
   },
   "devDependencies": {
+    "@gingr/eslint-config": "*",
+    "@gingr/prettier-config": "*",
+    "concurrently": "^9.1.2",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^9.19.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.2",
     "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.3.4",
     "typescript": "5.5.4"
   },
@@ -19,5 +32,11 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "lint-staged": {
+    "./**/*.{js,mjs,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write \"**/*.{ts,tsx,md}\""
+    ]
+  }
 }

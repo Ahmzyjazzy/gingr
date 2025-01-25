@@ -1,5 +1,5 @@
 {
-  "name": "@repo/eslint-config",
+  "name": "@gingr/eslint-config",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -9,9 +9,11 @@
     "./react-internal": "./react-internal.js"
   },
   "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6",
+    "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.17.0",
     "@next/eslint-plugin-next": "^15.1.0",
-    "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-react": "^7.37.2",
