@@ -9,7 +9,7 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
  */
 export const baseOptions: BaseLayoutProps = {
   nav: {
-    // can be JSX too!
+    // can be JSX too!  n bj
     title: 'Ging3r',
   },
   links: [
@@ -20,7 +20,7 @@ export const baseOptions: BaseLayoutProps = {
     },
     {
       text: 'Blogs',
-      url: '/blogs',
+      url: '/blog',
       active: 'nested-url',
     },
   ],

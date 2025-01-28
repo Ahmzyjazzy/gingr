@@ -11,4 +11,5 @@ export default {
     './node_modules/fumadocs-ui/dist/**/*.js',
   ],
   presets: [createPreset()],
+  darkMode: "class"
 };
