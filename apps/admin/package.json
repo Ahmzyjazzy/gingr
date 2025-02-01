@@ -11,6 +11,7 @@
         "test-debug": "jest"
     },
     "dependencies": {
+        "@gingr/ui": "*",
         "@heroui/button": "2.2.9",
         "@heroui/code": "2.2.6",
         "@heroui/input": "2.4.9",
