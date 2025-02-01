@@ -1,18 +1,9 @@
-import { ReactNode } from "react";
+import { Button as HeroUIButton, type ButtonProps } from "@heroui/button";
 
-interface ButtonProps {
-  children: ReactNode;
+export interface CustomButtonProps extends ButtonProps {
   className?: string;
-  appName: string;
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
-  return (
-    <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
-    >
-      {children}
-    </button>
-  );
-};
+export function Button({ className = "", ...props }: CustomButtonProps) {
+  return <HeroUIButton className={className} {...props} />;
+}

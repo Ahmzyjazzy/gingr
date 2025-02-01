@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "devDependencies": {
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.17"
   },
   "dependencies": {
     "@heroui/theme": "2.4.5"

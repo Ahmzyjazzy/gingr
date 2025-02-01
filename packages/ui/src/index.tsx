@@ -3,5 +3,6 @@ import "./styles.css";
 
 // components
 export * from './button';
-export * from './card';
-export * from './code';
+
+// utils
+export * from './utils/index';

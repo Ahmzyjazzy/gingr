@@ -5,7 +5,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist",
-    "./styles.css": "./dist/index.css"
+    "./styles.css": "./dist/index.css",
+    "./src/utils/index.ts": "./utils/index.js"
   },
   "scripts": {
     "build": "tsup",
@@ -14,22 +15,42 @@
     "generate:component": "turbo gen react-component",
     "lint": "eslint . --max-warnings 0"
   },
+  "dependencies": {
+    "@heroui/button": "2.2.9",
+    "@heroui/code": "2.2.6",
+    "@heroui/input": "2.4.9",
+    "@heroui/kbd": "2.2.6",
+    "@heroui/link": "2.2.7",
+    "@heroui/listbox": "2.3.9",
+    "@heroui/navbar": "2.2.8",
+    "@heroui/snippet": "2.2.10",
+    "@heroui/switch": "2.2.8",
+    "@heroui/system": "2.4.6",
+    "@heroui/theme": "2.4.5",
+    "@react-aria/ssr": "3.9.7",
+    "@react-aria/visually-hidden": "3.8.18",
+    "clsx": "2.1.1",
+    "framer-motion": "^12.0.6",
+    "intl-messageformat": "^10.5.0",
+    "next": "15.1.6",
+    "next-themes": "^0.4.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
     "@gingr/eslint-config": "*",
+    "@gingr/prettier-config": "*",
+    "@gingr/tailwind-config": "*",
     "@gingr/tsconfig": "*",
     "@turbo/gen": "^1.12.4",
     "@types/node": "^20.11.24",
     "@types/react": "18.3.0",
     "@types/react-dom": "18.3.1",
     "postcss": "^8",
-    "typescript": "5.5.4",
-    "tsup": "^8.3.5"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.0.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwind-merge": "^2.6.0"
+    "tsup": "^8.3.5",
+    "tailwind-variants": "0.1.20",
+    "tailwindcss": "^3.4.17",
+    "tailwind-merge": "^2.6.0",
+    "typescript": "5.6.3"
   }
 }

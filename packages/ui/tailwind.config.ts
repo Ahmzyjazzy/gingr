@@ -1,3 +1,7 @@
 import sharedConfig from "@gingr/tailwind-config/tailwind.config";
 
-export const presets = [sharedConfig];
+const config = {
+    presets: [sharedConfig],
+};
+
+export default config;
