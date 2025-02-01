@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Ginger",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "Ginger App",
+  description: "End user portal for Ginger App.",
   navItems: [
     {
       label: "Home",
