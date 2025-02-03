@@ -11,8 +11,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // background: 'var(--background)',
-        // foreground: 'var(--foreground)',
+        ginger: {
+          blue: "#0765EB",
+          orange: "#DC851F",
+          purple: "#775BE5",
+          red: "#E01A4F",
+          black: '#0C090D'
+        }
       },
     },
   },

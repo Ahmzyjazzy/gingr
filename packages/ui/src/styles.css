@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+    --blue: #0765EB;
+    --red: #820933;
+    --purple: #775BE5;
+    --navy: #030F24;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --blue: #0765EB;
+        --red: #820933;
+        --purple: #775BE5;
+        --navy: #030F24;
+    }
+}
+
+/* body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+} */
