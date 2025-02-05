@@ -145,12 +145,12 @@ export default function OnboardingSlider() {
       </AnimatePresence>
 
       {/* Progress Indicator */}
-      <div className="mt-8 mx-auto flex justify-between items-center w-full max-w-xs">
+      <div className="mt-8 mx-auto flex justify-between items-center w-full max-w-xs lg:max-w-lg">
         <div className="flex space-x-2">
           {slides.map((_, index) => (
             <div
               key={index}
-              className="relative w-8 lg:w-12 h-1 bg-gray-300 rounded overflow-hidden"
+              className="relative w-10 lg:w-12 h-1 bg-gray-300 rounded overflow-hidden"
             >
               {index === currentIndex && (
                 <motion.div
