@@ -47,7 +47,7 @@ const slides = [
 export default function OnboardingSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const touchStartX = useRef<number | null>(null);
+  const [showOverlay, setShowOverlay] = useState<"pause" | "play" | null>(null);
 
   const nextSlide = () =>
     setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -55,12 +55,48 @@ export default function OnboardingSlider() {
   const prevSlide = () =>
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
 
+  const [progress, setProgress] = useState(0);
+  const animationFrame = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+  const pausedTimeRef = useRef<number>(0); // Store the last progress before pause
+
   // Auto-slide
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => nextSlide(), 5000);
+    if (isPaused) {
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+        animationFrame.current = null;
+      }
 
-    return () => clearInterval(interval);
+      return;
+    }
+
+    let startTime = Date.now() - pausedTimeRef.current; // Resume from last progress
+
+    startTimeRef.current = startTime;
+    const duration = 5000; // 5 seconds
+
+    const updateProgress = () => {
+      const elapsedTime = Date.now() - startTime;
+      const newProgress = Math.min((elapsedTime / duration) * 100, 100);
+
+      if (newProgress >= 100) {
+        setProgress(0);
+        pausedTimeRef.current = 0; // Reset pause state
+        nextSlide();
+      } else {
+        setProgress(newProgress);
+        animationFrame.current = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    animationFrame.current = requestAnimationFrame(updateProgress);
+
+    return () => {
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+      }
+    };
   }, [currentIndex, isPaused]);
 
   // Keyboard Navigation
@@ -75,28 +111,26 @@ export default function OnboardingSlider() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Mobile Swipe Detection
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!touchStartX.current) return;
-
-    const touchEndX = e.touches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-
-    if (diff > 50) nextSlide();
-    if (diff < -50) prevSlide();
-
-    touchStartX.current = null;
-  };
+  useEffect(() => {
+    if (isPaused) {
+      pausedTimeRef.current = progress * 50; // Store progress in milliseconds
+    }
+  }, [isPaused]);
 
   return (
     <div
-      className="relative w-screen h-screen overflow-hidden"
-      onTouchMove={handleTouchMove}
-      onTouchStart={handleTouchStart}
+      aria-hidden="true"
+      className="relative w-screen h-screen flex flex-col space-y-10"
+      onClick={() => {
+        setIsPaused((prev) => {
+          const newPausedState = !prev;
+
+          setShowOverlay(newPausedState ? "pause" : "play");
+          setTimeout(() => setShowOverlay(null), 800); // Hide after 800ms
+
+          return newPausedState;
+        });
+      }}
     >
       {/* Background Color Transition */}
       <AnimatePresence mode="sync">
@@ -111,31 +145,31 @@ export default function OnboardingSlider() {
       </AnimatePresence>
 
       {/* Progress Indicator */}
-      <div className="absolute top-8 lg:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {slides.map((_, index) => (
-          <div
-            key={index}
-            className="relative w-12 h-1 bg-gray-300 rounded overflow-hidden"
-          >
-            {index === currentIndex && (
-              <motion.div
-                animate={{ width: isPaused ? "0%" : "100%" }} // Stop animation when paused
-                className="absolute left-0 top-0 h-full bg-white"
-                initial={{ width: 0 }}
-                transition={{
-                  duration: 5,
-                  ease: "linear",
-                  repeat: Infinity,
-                  repeatType: "loop",
-                }}
-              />
-            )}
-          </div>
-        ))}
+      <div className="mt-8 mx-auto flex justify-between items-center w-full max-w-xs">
+        <div className="flex space-x-2">
+          {slides.map((_, index) => (
+            <div
+              key={index}
+              className="relative w-8 lg:w-12 h-1 bg-gray-300 rounded overflow-hidden"
+            >
+              {index === currentIndex && (
+                <motion.div
+                  animate={{ width: `${progress}%` }}
+                  className="absolute left-0 top-0 h-full bg-white"
+                  initial={{ width: 0 }}
+                  transition={{ duration: 0.2, ease: "linear" }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+        <Link className="text-white" href="/">
+          Skip
+        </Link>
       </div>
 
       {/* Slide Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -144,8 +178,6 @@ export default function OnboardingSlider() {
             exit={{ opacity: 0, y: -20 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.6 }}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
           >
             <h1 className="text-4xl font-bold">{slides[currentIndex].title}</h1>
             <p className="text-lg">{slides[currentIndex].description}</p>
@@ -156,19 +188,40 @@ export default function OnboardingSlider() {
               src={slides[currentIndex].image}
               width={280}
             />
+            {/* Buttons */}
+            <div className="my-24 w-full max-w-xs space-y-4 mx-auto">
+              <Button className="bg-white text-black font-medium w-full">
+                I&apos;m new to Ginger
+              </Button>
+              <Link className="text-white justify-center w-full" href="/">
+                I already have an account
+              </Link>
+            </div>
           </motion.div>
         </AnimatePresence>
-
-        {/* Buttons */}
-        <div className="mt-8 w-full max-w-xs space-y-4">
-          <Button className="bg-white text-black font-medium w-full">
-            I&apos;m new to Ginger
-          </Button>
-          <Link className="text-white" href="/">
-            I already have an account
-          </Link>
-        </div>
       </div>
+
+      {showOverlay && (
+        <motion.div
+          key={showOverlay}
+          animate={{ opacity: [0, 1, 0], scale: [0.8, 1.2, 1] }}
+          className="absolute inset-0 flex items-center justify-center z-20"
+          initial={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
+          <div className="bg-black bg-opacity-50 rounded-full p-6">
+            {showOverlay === "pause" ? (
+              <div className="w-12 h-12 flex items-center justify-center text-white text-5xl font-bold">
+                ❚❚
+              </div>
+            ) : (
+              <div className="w-12 h-12 flex items-center justify-center text-white text-5xl font-bold">
+                ▶
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
