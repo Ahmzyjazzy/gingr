@@ -6,11 +6,17 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "dev:web": "turbo dev --filter web --filter ui",
+    "dev:admin": "turbo dev --filter admin --filter ui",
     "dev:docs": "turbo dev --filter docs --filter ui",
+    "dev:email": "turbo dev:emails",
     "lint": "turbo lint",
     "lint:fix": "turbo lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test": "turbo test"
+    "test": "turbo test",
+    "db:generate": "turbo db:generate",
+    "db:push": "turbo db:push",
+    "db:prisma:studio": "turbo db:prisma:studio",
+    "db:migrate:deploy": "turbo db:migrate:deploy"
   },
   "devDependencies": {
     "@gingr/eslint-config": "*",
@@ -38,5 +44,8 @@
       "eslint --fix",
       "prettier --write \"**/*.{ts,tsx,md}\""
     ]
+  },
+  "dependencies": {
+    "node-mailjet": "^6.0.6"
   }
 }

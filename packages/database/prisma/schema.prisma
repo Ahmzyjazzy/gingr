@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String        @id @default(cuid())
+  fbId            String?       @unique
+  username        String?
+  email           String?       @unique
+  emailVerifiedAt DateTime?
+  phoneNumber     String?       @unique
+  phoneVerifiedAt DateTime?
+  image           String?
+  country         String?
+  countryCode     String?
+  countryDialCode String?
+  txnPin          String?
+  use2fa          Boolean       @default(true)
+  referralLink    String?
+  profile         Profile?
+  account         Account[]
+  deviceTokens    DeviceToken[]
+  active          Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Profile {
+  id                  String    @id @default(cuid())
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String    @unique
+  name                String?
+  gender              String?
+  state               DateTime?
+  region              String?   
+  city                DateTime?
+  addressPrimary      String?
+  addressSecondary    String?
+  bvnStatus           String?
+  ninStatus           String?
+  cacDocument         String?
+  utilityBillDocument String?
+  govtIdDocument      String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+enum AccountType {
+  PERSONAL
+  BUSINESS
+}
+
+model Account {
+  id             String      @id @default(cuid())
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  accountName    String?
+  accountNumber  String?
+  accountType    AccountType @default(PERSONAL)
+  currentBalance Decimal     @default(0) @db.Decimal(18, 2)
+  balanceBefore  Decimal     @default(0) @db.Decimal(18, 2)
+  balanceAfter   Decimal     @default(0) @db.Decimal(18, 2)
+  ledgerBalance  Decimal     @default(0) @db.Decimal(18, 2)
+  active         Boolean     @default(true)
+  pndStatus      Boolean     @default(false)
+  pndReason      String?
+  provider       String? // represent provider integrated with to provide the account number 
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model DeviceToken {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  name      String
+  token     String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

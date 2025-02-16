@@ -1,0 +1,26 @@
+{
+  "name": "@gingr/database",
+  "version": "1.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:push:dev": "prisma db push --skip-generate --accept-data-loss",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:prisma:studio": "prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "prisma-json-types-generator": "^3.2.2"
+  },
+  "devDependencies": {
+    "@gingr/tsconfig": "*",
+    "prisma": "^6.3.1"
+  }
+}

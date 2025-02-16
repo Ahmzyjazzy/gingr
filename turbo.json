@@ -7,6 +7,8 @@
   "tasks": {
     "build": {
       "dependsOn": [
+        "^test",
+        "^db:generate",
         "^build"
       ],
       "inputs": [
@@ -42,6 +44,10 @@
         "NEXT_PUBLIC_\\*",
         ".env.local",
         ".env"
+      ],
+      "dependsOn": [
+        "^db:generate",
+        "^db:migrate:deploy"
       ]
     },
     "test": {
@@ -50,7 +56,25 @@
     "clean": {
       "cache": false
     },
-    "storybook": {
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:push:dev": {
+      "cache": false
+    },
+    "db:migrate:dev": {
+      "cache": false
+    },
+    "db:migrate:deploy": {
+      "cache": false
+    },
+    "db:prisma:studio": {
+      "cache": false
+    },
+    "dev:emails": {
       "cache": false
     }
   }
