@@ -1,27 +1,100 @@
 import { render } from "@react-email/render";
-import { Login } from "../emails";
 import { mailjet } from "./mailjet";
+import { OtpEmail, ShareReferralEmail, WelcomeEmail } from "../emails";
 
-export const sendMagicLogin = async ({
+export const sendOneTimePassword = async ({
+  subject,
   email,
-  magicLink,
+  name,
+  otpCode,
 }: {
+  subject: string;
   email: string;
-  magicLink: string;
+  name: string;
+  otpCode: string;
 }) => {
-  const { host } = new URL(magicLink);
-  const HTMLPart = await render(<Login loginLink={magicLink} host={host} />);
-  const TextPart = await render(<Login loginLink={magicLink} host={host} />, {
+  const HTMLPart = await render(<OtpEmail name={name} token={otpCode} />);
+  const TextPart = await render(<OtpEmail name={name} token={otpCode} />, {
     plainText: true,
   });
-  const emailSubject = `Login to ${host}`;
+  const emailSubject = subject;
 
   await mailjet.post("send", { version: "v3.1" }).request({
     Messages: [
       {
         From: {
-          Email: "noreply@m30.io",
-          Name: "m30",
+          Email: "noreply@gingr.io",
+          Name: "Gingr",
+        },
+        To: [
+          {
+            Email: email,
+          },
+        ],
+        Subject: emailSubject,
+        TextPart,
+        HTMLPart,
+      },
+    ],
+  });
+};
+
+export const sendWelcomeEmail = async ({
+  email,
+  name,
+}: {
+  email: string;
+  name: string;
+}) => {
+  const HTMLPart = await render(<WelcomeEmail name={name} />);
+  const TextPart = await render(<WelcomeEmail name={name} />, {
+    plainText: true,
+  });
+  const emailSubject = 'Welcome to Gingr';
+
+  await mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [
+      {
+        From: {
+          Email: "noreply@gingr.io",
+          Name: "Gingr",
+        },
+        To: [
+          {
+            Email: email,
+          },
+        ],
+        Subject: emailSubject,
+        TextPart,
+        HTMLPart,
+      },
+    ],
+  });
+};
+
+export const sendRefferalLink = async ({
+  email,
+  name,
+  refferalCode,
+  refferalLink,
+}: {
+  email: string;
+  name: string;
+  refferalCode: string;
+  refferalLink: string;
+}) => {
+  const HTMLPart = await render(<ShareReferralEmail name={name} refferalCode={refferalCode} refferalLink={refferalLink} />);
+  const TextPart = await render(<ShareReferralEmail name={name} refferalCode={refferalCode} refferalLink={refferalLink} />, {
+    plainText: true,
+  });
+  const emailSubject = `Join ${name} on Gingr`;
+
+  await mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [
+      {
+        From: {
+          Email: "noreply@gingr.io",
+          Name: "Gingr",
         },
         To: [
           {

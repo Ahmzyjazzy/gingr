@@ -14,7 +14,6 @@ type GiftEmailProps = {
 export const GiftEmail = ({ name, rewardLink, host }: GiftEmailProps) => {
   return (
     <Layout preview="You Got a Gift to Redeem on Ginger">
-      {/* Greeting */}
       <Salutation name={name} />
 
       <Text className="text-gray-600">

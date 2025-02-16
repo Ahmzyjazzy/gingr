@@ -13,7 +13,6 @@ type WelcomeEmailProps = {
 export const WelcomeEmail = ({ name }: WelcomeEmailProps) => {
   return (
     <Layout preview="Weclome to Ginger" supportInfo={false}>
-      {/* Greeting */}
       <Salutation name={name} />
 
       <Text className="text-gray-500 text-sm text-left mt-4">

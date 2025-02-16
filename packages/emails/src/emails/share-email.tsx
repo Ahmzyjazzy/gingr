@@ -8,13 +8,12 @@ import { Layout, Salutation } from "../components";
 type ShareReferralEmailProps = {
   name: string;
   refferalLink: string;
-  host?: string;
+  refferalCode: string;
 };
 
-export const ShareReferralEmail = ({ name, refferalLink, host }: ShareReferralEmailProps) => {
+export const ShareReferralEmail = ({ name, refferalLink, refferalCode }: ShareReferralEmailProps) => {
   return (
-    <Layout preview="You Got a Gift to Redeem on Ginger" supportInfo={false}>
-      {/* Greeting */}
+    <Layout preview={`Join ${name} on Ginger`} supportInfo={false}>
       <Salutation title={`Join ${name} on Ginger`} />
 
       <Text className="text-gray-600">
@@ -22,7 +21,7 @@ export const ShareReferralEmail = ({ name, refferalLink, host }: ShareReferralEm
       </Text>
 
       <Text className="text-gray-600">
-        Use my link below or my phone number <b>09023459697</b> to join and get <b>NGN1,000</b> welcome bonus.
+        Use my link below or my phone number <b>{refferalCode}</b> to join and get <b>NGN1,000</b> welcome bonus.
       </Text>
 
       <Section className="bg-purple-50 text-center text-sm font-semibold text-indigo-600 py-3 rounded-lg mx-auto max-w-xs my-4">
@@ -45,7 +44,7 @@ export const ShareReferralEmail = ({ name, refferalLink, host }: ShareReferralEm
 ShareReferralEmail.PreviewProps = {
   name: "Lade",
   refferalLink: "https://link.ginger.co/arzRQ",
-  host: "ginger.co"
+  refferalCode: "09023459697"
 } as ShareReferralEmailProps;
 
 

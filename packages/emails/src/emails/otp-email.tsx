@@ -13,7 +13,6 @@ type OtpEmailProps = {
 export const OtpEmail = ({ name, token, host }: OtpEmailProps) => {
   return (
     <Layout preview="Your One-Time Password (OTP) for Ginger">
-      {/* Greeting */}
       <Salutation name={name} />
 
       <Text className="text-gray-600">
