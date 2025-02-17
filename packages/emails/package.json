@@ -17,6 +17,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@gingr/common": "*",
     "@react-email/components": "0.0.32",
     "@react-email/font": "^0.0.9",
     "@react-email/render": "^1.0.4",

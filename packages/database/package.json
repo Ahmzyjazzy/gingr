@@ -16,6 +16,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@gingr/common": "*",
     "@prisma/client": "^6.3.1",
     "prisma-json-types-generator": "^3.2.2"
   },

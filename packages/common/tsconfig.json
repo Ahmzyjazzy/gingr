@@ -1,0 +1,12 @@
+{
+  "extends": "@gingr/tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+  },
+
+  "include": ["."],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
