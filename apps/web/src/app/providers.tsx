@@ -2,7 +2,7 @@
 
 import type { ThemeProviderProps } from "next-themes";
 
-import { HeroUIProvider } from "@heroui/system";
+import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export interface ProvidersProps {

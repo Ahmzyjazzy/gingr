@@ -8,6 +8,7 @@
     "build": {
       "dependsOn": [
         "^test",
+        "^db:generate",
         "^build"
       ],
       "inputs": [
@@ -43,6 +44,10 @@
         "NEXT_PUBLIC_\\*",
         ".env.local",
         ".env"
+      ],
+      "dependsOn": [
+        "^db:generate",
+        "^db:migrate:deploy"
       ]
     },
     "test": {

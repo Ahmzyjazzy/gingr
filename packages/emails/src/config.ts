@@ -23,7 +23,7 @@ const config: Config = {
     api_key: process.env.MAILJET_API_KEY || "test-key",
     secret_key: process.env.MAILJET_SECRET_KEY || "test-secret",
   },
-  signup_list_id: 78531,
+  signup_list_id: 10515648,
   env: getEnv(),
 };
 

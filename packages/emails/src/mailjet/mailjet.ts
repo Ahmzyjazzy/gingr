@@ -10,3 +10,4 @@ export const mailjet = new Mailjet({
 });
 
 export const SIGNUP_LIST_ID = 78531;
+
