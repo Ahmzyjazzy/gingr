@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
+import AuthProvider from "@/components/auth-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -39,14 +40,16 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers
-          themeProps={{
-            attribute: "class",
-            defaultTheme: "dark",
-          }}
-        >
-          {children}
-        </Providers>
+        <AuthProvider>
+          <Providers
+            themeProps={{
+              attribute: "class",
+              defaultTheme: "dark",
+            }}
+          >
+            {children}
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

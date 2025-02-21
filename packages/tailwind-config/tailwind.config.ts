@@ -24,7 +24,7 @@ export default {
   darkMode: 'class',
   plugins: [heroui({
     prefix: "gingr",
-    // addCommonColors: true, // If true, the common heroui colors (e.g. "blue", "green", "purple") will replace the TailwindCSS default colors.
+    addCommonColors: true, // If true, the common heroui colors (e.g. "blue", "green", "purple") will replace the TailwindCSS default colors.
     defaultTheme: 'light',
     defaultExtendTheme: 'light',
     layout: {
