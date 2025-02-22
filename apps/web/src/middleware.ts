@@ -1,31 +1,67 @@
-// TODO: Implement middleward
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
-  return NextResponse.next();
+import { NextResponse } from "next/server";
+import {
+  authMiddleware,
+  redirectToHome,
+  redirectToLogin,
+} from "next-firebase-auth-edge";
+import { authConfig } from "@gingr/firebase";
+
+const PUBLIC_PATHS = ["/auth/login", "/auth/signup", "/auth/reset-password"];
+
+export async function middleware(request: NextRequest) {
+  return authMiddleware(request, {
+    loginPath: "/api/login",
+    logoutPath: "/api/logout",
+    refreshTokenPath: "/api/refresh-token",
+    debug: authConfig.debug,
+    enableMultipleCookies: authConfig.enableMultipleCookies,
+    enableCustomToken: authConfig.enableCustomToken,
+    apiKey: authConfig.apiKey,
+    cookieName: authConfig.cookieName,
+    cookieSerializeOptions: authConfig.cookieSerializeOptions,
+    cookieSignatureKeys: authConfig.cookieSignatureKeys,
+    serviceAccount: authConfig.serviceAccount,
+    experimental_enableTokenRefreshOnExpiredKidHeader:
+      authConfig.experimental_enableTokenRefreshOnExpiredKidHeader,
+    tenantId: authConfig.tenantId,
+    dynamicCustomClaimsKeys: ["someCustomClaim"],
+    handleValidToken: async ({ token, decodedToken, customToken }, headers) => {
+      // Authenticated user should not be able to access /login, /register and /reset-password routes
+      if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
+        return redirectToHome(request);
+      }
+
+      return NextResponse.next({
+        request: {
+          headers,
+        },
+      });
+    },
+    handleInvalidToken: async (_reason) => {
+      return redirectToLogin(request, {
+        path: "/auth",
+        publicPaths: PUBLIC_PATHS,
+      });
+    },
+    handleError: async (error) => {
+      console.error("Unhandled authentication error", { error });
+
+      return redirectToLogin(request, {
+        path: "/auth",
+        publicPaths: PUBLIC_PATHS,
+      });
+    },
+  });
 }
 
-// import { admin } from "./lib";
-
-// export async function middleware(req: NextRequest) {
-//   const token = req.cookies.get("__session")?.value; // Get Firebase Auth token
-
-//   if (!token) {
-//     return NextResponse.redirect(new URL("/auth", req.url));
-//   }
-
-//   try {
-//     await admin.auth().verifyIdToken(token); // Validate the token
-
-//     return NextResponse.next(); // Allow the request
-//   } catch (error) {
-//     console.error("Invalid token:", error);
-
-//     return NextResponse.redirect(new URL("/auth", req.url));
-//   }
-// }
-
-// // Apply middleware to all protected routes
-// export const config = {
-//   matcher: ["/dashboard/:path*", "/profile/:path*"], // Change paths as needed
-// };
+export const config = {
+  matcher: [
+    "/",
+    "/((?!_next|favicon.ico|__/auth|__/firebase|api|static|auth|images|assets|icons|.*\\.).*)",
+    "/api/login",
+    "/api/logout",
+    "/api/refresh-token",
+  ],
+};

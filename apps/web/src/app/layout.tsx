@@ -1,12 +1,16 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
+import { getTokens } from "next-firebase-auth-edge";
+import { cookies, headers } from "next/headers";
+import { authConfig } from "@gingr/firebase";
 
 import { Providers } from "./providers";
+import { toUser } from "./shared/user";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import AuthProvider from "@/components/auth-provider";
+import { AuthProvider } from "@/app/(auth)/auth/auth-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -26,11 +30,17 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const tokens = await getTokens(await cookies(), {
+    ...authConfig,
+    headers: await headers(),
+  });
+  const user = tokens ? toUser(tokens) : null;
+
   return (
     <html suppressHydrationWarning lang="en">
       <head />
@@ -40,7 +50,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <AuthProvider>
+        <AuthProvider serverUser={user}>
           <Providers
             themeProps={{
               attribute: "class",

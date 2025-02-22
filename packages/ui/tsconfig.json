@@ -1,6 +1,7 @@
 {
   "extends": "@gingr/tsconfig/react-library.json",
   "compilerOptions": {
+    "preserveSymlinks": true,
     "outDir": "dist"
   },
   "include": ["."],

@@ -122,7 +122,7 @@ export default function AuthIntroSlider() {
 
             {/* Testimonial Card */}
             <motion.div
-              className="bg-white dark:bg-gray-900/90 text-foreground p-6 rounded-xl shadow-lg mb-10 2xl:mb-20"
+              className="bg-white dark:bg-gray-900/90 text-foreground p-6 rounded-xl shadow-lg mb-20 2xl:mb-40"
               // variants={itemVariants}
             >
               <motion.p className="mb-4" variants={itemVariants}>
