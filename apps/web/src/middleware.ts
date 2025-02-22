@@ -8,7 +8,12 @@ import {
 } from "next-firebase-auth-edge";
 import { authConfig } from "@gingr/firebase";
 
-const PUBLIC_PATHS = ["/auth/login", "/auth/signup", "/auth/reset-password"];
+const PUBLIC_PATHS = [
+  "/auth",
+  "/auth/login",
+  "/auth/signup",
+  "/auth/reset-password",
+];
 
 export async function middleware(request: NextRequest) {
   return authMiddleware(request, {
@@ -29,6 +34,8 @@ export async function middleware(request: NextRequest) {
     dynamicCustomClaimsKeys: ["someCustomClaim"],
     handleValidToken: async ({ token, decodedToken, customToken }, headers) => {
       // Authenticated user should not be able to access /login, /register and /reset-password routes
+      console.debug("handleValidToken", { token, decodedToken, customToken });
+
       if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
         return redirectToHome(request);
       }
@@ -40,6 +47,8 @@ export async function middleware(request: NextRequest) {
       });
     },
     handleInvalidToken: async (_reason) => {
+      console.error("handleInvalidToken", { reason: _reason });
+
       return redirectToLogin(request, {
         path: "/auth",
         publicPaths: PUBLIC_PATHS,
@@ -59,7 +68,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
-    "/((?!_next|favicon.ico|__/auth|__/firebase|api|static|auth|images|assets|icons|.*\\.).*)",
+    "/((?!_next|favicon.ico|__/auth|__/firebase|api|static|images|assets|icons|.*\\.).*)",
     "/api/login",
     "/api/logout",
     "/api/refresh-token",

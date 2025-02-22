@@ -29,13 +29,13 @@ export default function Dashboard() {
       <Card className="max-w-sm p-4 shadow-lg rounded-xl">
         <CardBody className="flex flex-col items-center text-center">
           <Avatar
-            alt={user.displayName}
+            alt={user?.displayName}
             className="mb-4"
             size="lg"
-            src={user.photoURL}
+            src={user?.photoURL}
           />
-          <h2 className="text-lg font-bold">{user.displayName}</h2>
-          <p className="text-lg font-medium">{user.email}</p>
+          <h2 className="text-lg font-bold">{user?.displayName}</h2>
+          <p className="text-lg font-medium">{user?.email}</p>
           <Button
             className="my-4 w-full"
             color="default"
