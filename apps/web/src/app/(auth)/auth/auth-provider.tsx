@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { createContext, useContext } from "react";
-import { onAuthStateChanged, UserInfo } from "firebase/auth";
+import { UserInfo } from "firebase/auth";
 import { Claims } from "next-firebase-auth-edge/lib/auth/claims";
-import { getFirebaseAuth } from "@gingr/firebase";
 
 export interface User extends UserInfo {
   idToken: string;

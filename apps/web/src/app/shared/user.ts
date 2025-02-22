@@ -1,7 +1,7 @@
 import { Tokens } from "next-firebase-auth-edge";
 import { filterStandardClaims } from "next-firebase-auth-edge/lib/auth/claims";
 
-import { User } from "@/app/(auth)/auth/auth-context";
+import { User } from "../(auth)/auth/auth-provider";
 
 export const toUser = ({ token, customToken, decodedToken }: Tokens): User => {
   const {
