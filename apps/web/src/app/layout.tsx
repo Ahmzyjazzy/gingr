@@ -54,7 +54,7 @@ export default async function RootLayout({
           <Providers
             themeProps={{
               attribute: "class",
-              defaultTheme: "dark",
+              defaultTheme: "light",
             }}
           >
             {children}
