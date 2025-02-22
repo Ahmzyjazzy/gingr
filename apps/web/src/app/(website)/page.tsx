@@ -8,11 +8,13 @@ import { getFirebaseAuth, serverLogout } from "@gingr/firebase";
 import { useLoadingCallback } from "react-loading-hook";
 import { useRouter } from "next/navigation";
 
+import AppLoading from "../loading";
+
 import { ThemeSwitch } from "@/components/theme-switch";
 import { useAuth } from "@/app/(auth)/auth/auth-provider";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   const [handleLogout, isLogoutLoading] = useLoadingCallback(async () => {
@@ -23,6 +25,10 @@ export default function Dashboard() {
 
     router.refresh();
   });
+
+  if (loading) {
+    return <AppLoading />;
+  }
 
   return (
     <main className="h-screen w-screen grid place-items-center">
