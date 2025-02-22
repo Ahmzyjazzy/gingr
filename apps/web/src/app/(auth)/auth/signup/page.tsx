@@ -4,8 +4,6 @@ import React from "react";
 import { Button } from "@gingr/ui";
 import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth";
 import { useLoadingCallback } from "react-loading-hook";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
 import {
   loginWithCredential,
   getFirebaseAuth,
@@ -14,10 +12,11 @@ import {
 } from "@gingr/firebase";
 import Image from "next/image";
 
+import AuthDivider from "../../_components/auth-divider";
+
 import CreateUserWithCredentialForm from "./_components/create-user-form";
 
 import { useRedirectAfterLogin } from "@/app/shared/redirectAfterLogin";
-import AuthDivider from "../../_components/auth-divider";
 
 interface PasswordFormValue {
   email: string;
@@ -25,7 +24,6 @@ interface PasswordFormValue {
 }
 
 export default function Page() {
-  const router = useRouter();
   const redirectAfterLogin = useRedirectAfterLogin();
 
   async function handleLogin(credential: UserCredential) {
@@ -81,6 +79,9 @@ export default function Page() {
           Create Account with Gmail
         </Button>
       </div>
+      {googleError && (
+        <div className="error-message">{googleError?.message}</div>
+      )}
 
       <AuthDivider />
 
@@ -93,6 +94,9 @@ export default function Page() {
         }}
         isCreateLoading={isCreateLoading}
       />
+      {createUserError && (
+        <div className="error-message">{createUserError?.message}</div>
+      )}
     </div>
   );
 }

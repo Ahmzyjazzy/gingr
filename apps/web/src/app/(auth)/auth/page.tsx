@@ -62,7 +62,7 @@ export default function Page() {
           Continue with Gmail
         </Button>
         {googleError && (
-          <div className="error-message">{googleError.message}</div>
+          <div className="error-message">{googleError?.message}</div>
         )}
 
         <Button

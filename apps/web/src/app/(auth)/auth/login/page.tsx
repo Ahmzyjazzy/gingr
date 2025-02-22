@@ -2,11 +2,9 @@
 
 import React from "react";
 import { Button } from "@gingr/ui";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import { signInWithEmailAndPassword, UserCredential } from "firebase/auth";
 import { useLoadingCallback } from "react-loading-hook";
-import { useRouter } from "next/navigation";
 import {
   loginWithCredential,
   getGoogleProvider,
@@ -14,10 +12,11 @@ import {
   getFirebaseAuth,
 } from "@gingr/firebase";
 
+import AuthDivider from "../../_components/auth-divider";
+
 import LoginWithCredentialForm from "./_components/login-user-form";
 
 import { useRedirectAfterLogin } from "@/app/shared/redirectAfterLogin";
-import AuthDivider from "../../_components/auth-divider";
 
 interface PasswordFormValue {
   email: string;
@@ -25,9 +24,6 @@ interface PasswordFormValue {
 }
 
 export default function Page() {
-  const { theme } = useTheme();
-  const router = useRouter();
-
   const redirectAfterLogin = useRedirectAfterLogin();
 
   async function handleLogin(credential: UserCredential) {
@@ -79,6 +75,9 @@ export default function Page() {
           Sign in with Gmail
         </Button>
       </div>
+      {googleError && (
+        <div className="error-message">{googleError?.message}</div>
+      )}
 
       <AuthDivider />
 
@@ -91,6 +90,9 @@ export default function Page() {
         }}
         isCreateLoading={isEmailLoading}
       />
+      {emailPasswordError && (
+        <div className="error-message">{emailPasswordError?.message}</div>
+      )}
     </div>
   );
 }
