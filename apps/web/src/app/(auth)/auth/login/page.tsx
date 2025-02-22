@@ -13,6 +13,7 @@ import {
 } from "@gingr/firebase";
 
 import AuthDivider from "../../_components/auth-divider";
+import AuthErrorDisplay from "../../_components/auth-error";
 
 import LoginWithCredentialForm from "./_components/login-user-form";
 
@@ -76,7 +77,10 @@ export default function Page() {
         </Button>
       </div>
       {googleError && (
-        <div className="error-message">{googleError?.message}</div>
+        <AuthErrorDisplay
+          code={googleError?.code}
+          message={googleError?.message}
+        />
       )}
 
       <AuthDivider />
@@ -91,7 +95,10 @@ export default function Page() {
         isCreateLoading={isEmailLoading}
       />
       {emailPasswordError && (
-        <div className="error-message">{emailPasswordError?.message}</div>
+        <AuthErrorDisplay
+          code={emailPasswordError?.code}
+          message={emailPasswordError?.message}
+        />
       )}
     </div>
   );

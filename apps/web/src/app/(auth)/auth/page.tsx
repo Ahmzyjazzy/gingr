@@ -14,6 +14,8 @@ import {
   loginWithProvider,
 } from "@gingr/firebase";
 
+import AuthErrorDisplay from "../_components/auth-error";
+
 import { useRedirectAfterLogin } from "@/app/shared/redirectAfterLogin";
 
 export default function Page() {
@@ -62,7 +64,10 @@ export default function Page() {
           Continue with Gmail
         </Button>
         {googleError && (
-          <div className="error-message">{googleError?.message}</div>
+          <AuthErrorDisplay
+            code={googleError?.code}
+            message={googleError?.message}
+          />
         )}
 
         <Button

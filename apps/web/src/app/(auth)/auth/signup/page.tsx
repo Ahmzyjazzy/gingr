@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 
 import AuthDivider from "../../_components/auth-divider";
+import AuthErrorDisplay from "../../_components/auth-error";
 
 import CreateUserWithCredentialForm from "./_components/create-user-form";
 
@@ -86,7 +87,10 @@ export default function Page() {
         </Button>
       </div>
       {googleError && (
-        <div className="error-message">{googleError?.message}</div>
+        <AuthErrorDisplay
+          code={googleError?.code}
+          message={googleError?.message}
+        />
       )}
 
       <AuthDivider />
@@ -101,7 +105,10 @@ export default function Page() {
         isCreateLoading={isRegisterLoading}
       />
       {registerError && (
-        <div className="error-message">{registerError?.message}</div>
+        <AuthErrorDisplay
+          code={registerError?.code}
+          message={registerError?.message}
+        />
       )}
     </div>
   );
