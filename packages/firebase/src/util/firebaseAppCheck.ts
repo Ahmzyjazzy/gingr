@@ -10,7 +10,6 @@ import { getFirebaseApp } from "./firebaseClient";
 let appCheck: AppCheck | null = null;
 
 export function getOrInitializeAppCheck(app: FirebaseApp): AppCheck {
-  console.log({appCheck})
   if (appCheck) {
     return appCheck;
   }
@@ -23,12 +22,14 @@ export function getOrInitializeAppCheck(app: FirebaseApp): AppCheck {
     });
   }
 
-  return (appCheck = initializeAppCheck(app, {
+  appCheck = initializeAppCheck(app, {
     provider: new ReCaptchaEnterpriseProvider(
       process.env.NEXT_PUBLIC_FIREBASE_APP_CHECK_KEY!,
     ),
     isTokenAutoRefreshEnabled: true, // Set to true to allow auto-refresh.
-  }));
+  });
+
+  return appCheck;
 }
 
 export function getAppCheck() {

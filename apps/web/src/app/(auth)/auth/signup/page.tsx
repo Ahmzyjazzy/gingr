@@ -2,7 +2,11 @@
 
 import React from "react";
 import { Button } from "@gingr/ui";
-import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  UserCredential,
+} from "firebase/auth";
 import { useLoadingCallback } from "react-loading-hook";
 import {
   loginWithCredential,
@@ -26,22 +30,24 @@ interface PasswordFormValue {
 export default function Page() {
   const redirectAfterLogin = useRedirectAfterLogin();
 
+  const [registerWithEmailAndPassword, isRegisterLoading, registerError] =
+    useLoadingCallback(async ({ email, password }: PasswordFormValue) => {
+      const auth = getFirebaseAuth();
+      const credential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      await loginWithCredential(credential);
+      await sendEmailVerification(credential.user);
+      redirectAfterLogin();
+    });
+
   async function handleLogin(credential: UserCredential) {
     await loginWithCredential(credential);
     redirectAfterLogin();
   }
-
-  const [
-    handleCreateUserWithEmailAndPassword,
-    isCreateLoading,
-    createUserError,
-  ] = useLoadingCallback(async ({ email, password }: PasswordFormValue) => {
-    const auth = getFirebaseAuth();
-
-    await handleLogin(
-      await createUserWithEmailAndPassword(auth, email, password),
-    );
-  });
 
   const [handleLoginWithGoogle, isGoogleLoading, googleError] =
     useLoadingCallback(async () => {
@@ -87,15 +93,15 @@ export default function Page() {
 
       <CreateUserWithCredentialForm
         handleSubmitCallback={async (email: string, password: string) => {
-          await handleCreateUserWithEmailAndPassword({
+          await registerWithEmailAndPassword({
             email,
             password,
           });
         }}
-        isCreateLoading={isCreateLoading}
+        isCreateLoading={isRegisterLoading}
       />
-      {createUserError && (
-        <div className="error-message">{createUserError?.message}</div>
+      {registerError && (
+        <div className="error-message">{registerError?.message}</div>
       )}
     </div>
   );
